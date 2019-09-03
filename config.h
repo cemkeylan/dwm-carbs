@@ -20,17 +20,18 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "Web" };
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "polybar-top_eDP1", NULL, NULL,     0, 1, -1},
+	/* class         instance    title       tags mask     isfloating   monitor */
+	{ "Gimp",        NULL,       NULL,       0,            1,           -1 },
+	{ "Firefox",     NULL,       NULL,       1 << 8,       0,           -1 },
+	{ "qutebrowser", NULL,       NULL,       1 << 8,       0,           -1 },
+
 };
 
 /* layout(s) */
@@ -38,11 +39,14 @@ static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] 
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 
+#include "fibonacci.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+	{ "[@]",      spiral },
+	{ "[\\]",     dwindle },
 };
 
 
@@ -76,7 +80,8 @@ static const char *brup[] = { "xbacklight", "-inc", "10", NULL };
 static const char *brdown[] = { "xbacklight", "-dec", "10", NULL };
 static const char *music[] = { "st", "zsh", "-c", "ncmpcpp", NULL };
 static const char *mail[] = { "st", "zsh", "-c", "neomutt", NULL };
-static const char *fm[] = { "st", "zsh", "-c", "fff", NULL};
+static const char *fm[] = { "st", "zsh", "-c", "lf", NULL};
+static const char *whatsapp[] = { "surf", "web.whatsapp.com", NULL};
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -96,26 +101,30 @@ static Key keys[] = {
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_i,      spawn,          {.v = whatsapp } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-/*	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },*/
+	{ WINKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+	{ WINKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+	{ WINKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ WINKEY,			XK_s,      setlayout,      {.v = &layouts[3]} },
+	{ WINKEY,			XK_d,      setlayout,      {.v = &layouts[4]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+	{ MODKEY|ControlMask,           XK_u,      focusmon,       {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_d,      focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ WINKEY,			XK_j,      setgaps,        {.i = +1 } },
 	{ WINKEY,			XK_k,      setgaps,        {.i = -1 } },
 	{ WINKEY,              		XK_h,      setgaps,        {.i = 0 } },
+	{ WINKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+	{ WINKEY,                       XK_l,      incnmaster,     {.i = -1 } },
 	{ 0, 			        BrightnessUp, spawn,       {.v = brup } },
 	{ 0,				BrightnessDown, spawn,     {.v = brdown } },
 	TAGKEYS(                        XK_1,                      0)
