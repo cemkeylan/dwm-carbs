@@ -13,10 +13,16 @@ static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
+static char normbgcolor[]           = "#222222";
+static char normbordercolor[]       = "#444444";
+static char normfgcolor[]           = "#bbbbbb";
+static char selfgcolor[]            = "#eeeeee";
+static char selbordercolor[]        = "#005577";
+static char selbgcolor[]            = "#005577";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor},
+	[SchemeSel]  = { selfgcolor, selbgcolor,  selbordercolor},
 };
 
 /* tagging */
@@ -53,8 +59,6 @@ static const Layout layouts[] = {
 /* key definitions */
 #define MODKEY Mod1Mask
 #define WINKEY Mod4Mask
-#define BrightnessDown           0x1008ff03
-#define BrightnessUp             0x1008ff02
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -64,9 +68,10 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
+#include <X11/XF86keysym.h>
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *browcmd[] = { "qutebrowser", NULL };
 static const char *surfcmd[] = { "surf", NULL };
@@ -82,51 +87,69 @@ static const char *music[] = { "st", "zsh", "-c", "ncmpcpp", NULL };
 static const char *mail[] = { "st", "zsh", "-c", "neomutt", NULL };
 static const char *fm[] = { "st", "zsh", "-c", "lf", NULL};
 static const char *whatsapp[] = { "surf", "web.whatsapp.com", NULL};
+static const char *volup[] = { "pactl", "set-sink-volume", "0", "+5%", NULL};
+static const char *voldown[] = { "pactl", "set-sink-volume", "0", "-5%", NULL};
+static const char *volmute[] = { "pactl", "set-sink-mute", "0", "toggle", NULL};
+static const char *audioplay[] = { "mpctoggle", NULL};
+static const char *audionext[] = { "mpc", "next", NULL};
+static const char *audioprev[] = { "mpc", "prev", NULL };
+static const char *dmenumount[] = { "dmenumount", NULL };
+static const char *dmenuumount[] = { "dmenuumount", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_u,      spawn,          {.v = dmenucmd } },
-	{ WINKEY,			XK_e,      spawn,   	   {.v = nighttog } },
-	{ WINKEY|ShiftMask,		XK_e,	   spawn,	   {.v = nightdis } },
-	{ WINKEY|ShiftMask,		XK_n, 	   spawn,	   {.v = shutdown } },
-	{ WINKEY|ShiftMask,		XK_r,	   spawn,	   {.v = reboot } },
-	{ WINKEY|ShiftMask,		XK_s,	   spawn,	   {.v = suspend } },
-	{ MODKEY,			XK_m,	   spawn,          {.v = music } },
-	{ MODKEY,			XK_n,	   spawn,          {.v = fm } },
-	{ MODKEY|ShiftMask,             XK_m,      spawn,	   {.v = mail } },
-	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_o,      spawn,          {.v = browcmd } },
-	{ MODKEY,			XK_p,	   spawn,          {.v = surfcmd } },
-	{ MODKEY,			XK_d,	   spawn,          {.v = rofiapp } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      spawn,          {.v = whatsapp } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
-	{ WINKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ WINKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ WINKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ WINKEY,			XK_s,      setlayout,      {.v = &layouts[3]} },
-	{ WINKEY,			XK_d,      setlayout,      {.v = &layouts[4]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY|ControlMask,           XK_u,      focusmon,       {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_d,      focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ WINKEY,			XK_j,      setgaps,        {.i = +1 } },
-	{ WINKEY,			XK_k,      setgaps,        {.i = -1 } },
-	{ WINKEY,              		XK_h,      setgaps,        {.i = 0 } },
-	{ WINKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ WINKEY,                       XK_l,      incnmaster,     {.i = -1 } },
-	{ 0, 			        BrightnessUp, spawn,       {.v = brup } },
-	{ 0,				BrightnessDown, spawn,     {.v = brdown } },
+	{ MODKEY,                       XK_u,      		  spawn,           {.v = dmenucmd } },
+	{ WINKEY,			XK_e,      		  spawn,   	   {.v = nighttog } },
+	{ WINKEY|ShiftMask,		XK_e,	   		  spawn,	   {.v = nightdis } },
+	{ WINKEY|ShiftMask,		XK_n, 	   		  spawn,	   {.v = shutdown } },
+	{ WINKEY|ShiftMask,		XK_r,	   		  spawn,	   {.v = reboot } },
+	{ WINKEY|ShiftMask,		XK_s,	   		  spawn,	   {.v = suspend } },
+	{ MODKEY,			XK_m,	   		  spawn,           {.v = music } },
+	{ MODKEY,			XK_n,	   		  spawn,           {.v = fm } },
+	{ MODKEY|ShiftMask,             XK_m,      		  spawn,	   {.v = mail } },
+	{ MODKEY,                       XK_Return, 		  spawn,           {.v = termcmd } },
+	{ MODKEY,                       XK_o,      		  spawn,           {.v = browcmd } },
+	{ MODKEY,			XK_p,	   		  spawn,           {.v = surfcmd } },
+	{ MODKEY,			XK_d,	   		  spawn,           {.v = rofiapp } },
+	{ WINKEY|ShiftMask,	 	XK_m,			  spawn,	   {.v = dmenumount } },
+	{ WINKEY|ShiftMask,		XK_u,			  spawn,	   {.v = dmenuumount } },
+	{ MODKEY,                       XK_b,      		  togglebar,       {0} },
+	{ MODKEY,                       XK_j,      		  focusstack,      {.i = +1 } },
+	{ MODKEY,                       XK_k,      		  focusstack,      {.i = -1 } },
+	{ MODKEY,                       XK_i,      		  spawn,           {.v = whatsapp } },
+	{ MODKEY,                       XK_h,      		  setmfact,        {.f = -0.05} },
+	{ MODKEY,                       XK_l,      		  setmfact,        {.f = +0.05} },
+	{ MODKEY,                       XK_Return, 		  zoom,            {0} },
+	{ MODKEY,                       XK_Tab,    		  view,            {0} },
+	{ MODKEY|ShiftMask,             XK_q,      		  killclient,      {0} },
+	{ WINKEY,                       XK_t,      		  setlayout,       {.v = &layouts[0]} },
+	{ WINKEY,                       XK_f,      		  setlayout,       {.v = &layouts[1]} },
+	{ WINKEY,                       XK_m,      		  setlayout,       {.v = &layouts[2]} },
+	{ WINKEY,			XK_s,      		  setlayout,       {.v = &layouts[3]} },
+	{ WINKEY,			XK_d,      		  setlayout,       {.v = &layouts[4]} },
+	{ MODKEY,                       XK_space,  		  setlayout,       {0} },
+	{ MODKEY|ShiftMask,             XK_space,  		  togglefloating,  {0} },
+	{ MODKEY,                       XK_0,      		  view,            {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_0,      		  tag,             {.ui = ~0 } },
+	{ MODKEY|ControlMask,           XK_u,      		  focusmon,        {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_d,      		  focusmon,        {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_comma,  		  tagmon,          {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period,                tagmon,          {.i = +1 } },
+	{ WINKEY,			XK_j,                     setgaps,         {.i = +1 } },
+	{ WINKEY,			XK_k,                     setgaps,         {.i = -1 } },
+	{ WINKEY,              		XK_h,                     setgaps,         {.i = 0 } },
+	{ WINKEY,                       XK_i,       		  incnmaster,      {.i = +1 } },
+	{ WINKEY,                       XK_l,                     incnmaster,      {.i = -1 } },
+	{ 0, 			        XF86XK_MonBrightnessUp,   spawn,           {.v = brup } },
+	{ 0,				XF86XK_MonBrightnessDown, spawn,           {.v = brdown } },
+	{ 0,				XF86XK_AudioRaiseVolume,  spawn,           {.v = volup } },
+	{ 0,				XF86XK_AudioLowerVolume,  spawn,           {.v = voldown } },
+	{ 0,				XF86XK_AudioMute,         spawn,           {.v = volmute } },
+	{ 0,				XF86XK_AudioPlay,         spawn,           {.v = audioplay } },
+	{ 0,				XF86XK_AudioNext,	  spawn,           {.v = audionext } },
+	{ 0,                            XF86XK_AudioPrev,         spawn,           {.v = audioprev } },
+	{ MODKEY|ShiftMask,             XK_e,                     quit,            {0} },
+	{ WINKEY,			XK_5,			  xrdb,            {.v = NULL } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -136,7 +159,6 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
 };
 
 /* button definitions */
