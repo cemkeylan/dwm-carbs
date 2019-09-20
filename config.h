@@ -26,7 +26,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "Web" };
+static const char *tags[] = { "Dev 1", "Dev 2", "Dev 3", "Dev 4", "News 5", "Chat 6", "Music 7", "Mail 8", "Web 9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -37,6 +37,13 @@ static const Rule rules[] = {
 	{ "Gimp",        NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",     NULL,       NULL,       1 << 8,       0,           -1 },
 	{ "qutebrowser", NULL,       NULL,       1 << 8,       0,           -1 },
+	{ "Surf",	 NULL,	     NULL,       1 << 8,       0,           -1 },
+	{ "tabbed",	 NULL,	     NULL,       1 << 8,       0,           -1 },
+	{ NULL,          NULL,       "Mail",     1 << 7,       0,           -1 },
+	{ NULL,          NULL,       "Music",    1 << 6,       0,           -1 },
+	{ NULL,	         NULL,       "IRC",      1 << 5,       0,           -1 },
+	{ NULL,		 NULL,       "Gomuks",   1 << 5,       0,           -1 },
+	{ NULL,		 NULL,       "News",     1 << 4,       0,           -1 },
 
 };
 
@@ -74,17 +81,18 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *browcmd[] = { "qutebrowser", NULL };
-static const char *surfcmd[] = { "surf", NULL };
+static const char *surfcmd[] = { "tabbed", "-c", "surf", "-e", NULL };
 static const char *rofiapp[] = { "rofi", "-show", "drun", NULL };
 static const char *nighttog[] = { "nightmodetoggle", "click", NULL };
 static const char *nightdis[] = { "nightmodetoggle", "disable", NULL };
 static const char *shutdown[] = { "yousure", NULL };
+static const char *newsboat[] = { "st", "-t", "News", "zsh", "-c", "newsboat", NULL};
 static const char *reboot[] = { "yousurereb", NULL };
 static const char *suspend[] = { "systemctl", "suspend", NULL };
 static const char *brup[] = { "xbacklight", "-inc", "10", NULL };
 static const char *brdown[] = { "xbacklight", "-dec", "10", NULL };
-static const char *music[] = { "st", "zsh", "-c", "ncmpcpp", NULL };
-static const char *mail[] = { "st", "zsh", "-c", "neomutt", NULL };
+static const char *music[] = { "st", "-t", "Music", "zsh", "-c", "ncmpcpp", NULL };
+static const char *mail[] = { "st", "-t", "Mail", "zsh", "-c", "neomutt", NULL };
 static const char *fm[] = { "st", "zsh", "-c", "lf", NULL};
 static const char *whatsapp[] = { "surf", "web.whatsapp.com", NULL};
 static const char *volup[] = { "pactl", "set-sink-volume", "0", "+5%", NULL};
@@ -111,6 +119,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_o,      		  spawn,           {.v = browcmd } },
 	{ MODKEY,			XK_p,	   		  spawn,           {.v = surfcmd } },
 	{ MODKEY,			XK_d,	   		  spawn,           {.v = rofiapp } },
+	{ MODKEY|ShiftMask,             XK_n,			  spawn,           {.v = newsboat } },
 	{ WINKEY|ShiftMask,	 	XK_m,			  spawn,	   {.v = dmenumount } },
 	{ WINKEY|ShiftMask,		XK_u,			  spawn,	   {.v = dmenuumount } },
 	{ MODKEY,                       XK_b,      		  togglebar,       {0} },
