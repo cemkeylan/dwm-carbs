@@ -94,7 +94,6 @@ static const char *brdown[] = { "xbacklight", "-dec", "10", NULL };
 static const char *music[] = { "st", "-t", "Music", "zsh", "-c", "ncmpcpp", NULL };
 static const char *mail[] = { "st", "-t", "Mail", "zsh", "-c", "neomutt", NULL };
 static const char *fm[] = { "st", "zsh", "-c", "lf", NULL};
-static const char *whatsapp[] = { "surf", "web.whatsapp.com", NULL};
 static const char *volup[] = { "pactl", "set-sink-volume", "0", "+5%", NULL};
 static const char *voldown[] = { "pactl", "set-sink-volume", "0", "-5%", NULL};
 static const char *volmute[] = { "pactl", "set-sink-mute", "0", "toggle", NULL};
@@ -125,7 +124,6 @@ static Key keys[] = {
 	{ MODKEY,                       XK_b,      		  togglebar,       {0} },
 	{ MODKEY,                       XK_j,      		  focusstack,      {.i = +1 } },
 	{ MODKEY,                       XK_k,      		  focusstack,      {.i = -1 } },
-	{ MODKEY,                       XK_i,      		  spawn,           {.v = whatsapp } },
 	{ MODKEY,                       XK_h,      		  setmfact,        {.f = -0.05} },
 	{ MODKEY,                       XK_l,      		  setmfact,        {.f = +0.05} },
 	{ MODKEY,                       XK_Return, 		  zoom,            {0} },
