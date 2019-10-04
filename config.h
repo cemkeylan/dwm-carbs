@@ -135,6 +135,7 @@ static Key keys[] = {
 	{ WINKEY,                       XK_m,      		  setlayout,       {.v = &layouts[2]} },
 	{ WINKEY,			XK_s,      		  setlayout,       {.v = &layouts[3]} },
 	{ WINKEY,			XK_d,      		  setlayout,       {.v = &layouts[4]} },
+	{ WINKEY|ShiftMask,		XK_f,			  fullscreen,      {0} },
 	{ MODKEY,                       XK_space,  		  setlayout,       {0} },
 	{ MODKEY|ShiftMask,             XK_space,  		  togglefloating,  {0} },
 	{ MODKEY,                       XK_0,      		  view,            {.ui = ~0 } },
