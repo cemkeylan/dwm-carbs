@@ -81,6 +81,7 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *docs[]     = { "readthedocs" };
 static const char *browcmd[] = { "qutebrowser", NULL };
 static const char *surfcmd[] = { "tabbed", "-c", "surf", "-e", NULL };
 static const char *rofiapp[] = { "rofi", "-show", "drun", NULL };
@@ -122,6 +123,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_n,			  spawn,           {.v = newsboat } },
 	{ WINKEY|ShiftMask,	 	XK_m,			  spawn,	   {.v = dmenumount } },
 	{ WINKEY|ShiftMask,		XK_u,			  spawn,	   {.v = dmenuumount } },
+	{ 0,                            XK_F1,                    spawn,           {.v = docs } },
 	{ MODKEY,                       XK_b,      		  togglebar,       {0} },
 	{ MODKEY,                       XK_j,      		  focusstack,      {.i = +1 } },
 	{ MODKEY,                       XK_k,      		  focusstack,      {.i = -1 } },
