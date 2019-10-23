@@ -104,6 +104,7 @@ static const char *audionext[] = { "mpc", "next", NULL};
 static const char *audioprev[] = { "mpc", "prev", NULL };
 static const char *dmenumount[] = { "dmenumount", NULL };
 static const char *dmenuumount[] = { "dmenuumount", NULL };
+static const char *dmenuXres[] = { "dmenuresources", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -161,6 +162,7 @@ static Key keys[] = {
 	{ 0,                            XF86XK_AudioPrev,         spawn,           {.v = audioprev } },
 	{ MODKEY|ShiftMask,             XK_e,                     quit,            {0} },
 	{ WINKEY,			XK_5,			  xrdb,            {.v = NULL } },
+	{ MODKEY,                       XK_x,                     spawn,           {.v = dmenuXres } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
