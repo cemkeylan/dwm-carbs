@@ -106,6 +106,7 @@ static const char *audioprev[] = { "mpc", "prev", NULL };
 static const char *dmenumount[] = { "dmenumount", NULL };
 static const char *dmenuumount[] = { "dmenuumount", NULL };
 static const char *dmenuXres[] = { "dmenuresources", NULL };
+static const char *passmenu[] = { "passmenu", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
