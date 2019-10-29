@@ -127,7 +127,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_n,			  spawn,           {.v = newsboat } },
 	{ WINKEY|ShiftMask,	 	XK_m,			  spawn,	   {.v = dmenumount } },
 	{ WINKEY|ShiftMask,		XK_u,			  spawn,	   {.v = dmenuumount } },
-	{ 0,                            XK_F1,                    spawn,           {.v = docs } },
+	{ WINKEY,                       XK_F1,                    spawn,           {.v = docs } },
 	{ MODKEY,                       XK_b,      		  togglebar,       {0} },
 	{ MODKEY,                       XK_j,      		  focusstack,      {.i = +1 } },
 	{ MODKEY,                       XK_k,      		  focusstack,      {.i = -1 } },
