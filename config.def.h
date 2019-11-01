@@ -81,53 +81,14 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *docs[]     = { "readthedocs", NULL };
-static const char *browcmd[] = { "sh", "-c", "$BROWSER", NULL };
-//static const char *surfcmd[] = { "tabbed", "-c", "surf", "-e", NULL };
-static const char *rofiapp[] = { "rofi", "-show", "drun", NULL };
-static const char *nighttog[] = { "nightmodetoggle", "click", NULL };
-static const char *nightdis[] = { "nightmodetoggle", "disable", NULL };
-static const char *shutdown[] = { "yousure", NULL };
-static const char *newsboat[] = { "st", "-t", "News", "zsh", "-c", "newsboat", NULL};
-static const char *reboot[] = { "yousurereb", NULL };
-static const char *suspend[] = { "systemctl", "suspend", NULL };
-static const char *brup[] = { "xbacklight", "-inc", "10", NULL };
-static const char *brdown[] = { "xbacklight", "-dec", "10", NULL };
-static const char *editor[] = { "st", "zsh", "-c", "$EDITOR", NULL };
-static const char *music[] = { "st", "-t", "Music", "zsh", "-c", "ncmpcpp", NULL };
-static const char *mail[] = { "st", "-t", "Mail", "zsh", "-c", "neomutt", NULL };
-static const char *fm[] = { "st", "zsh", "-c", "lf", NULL};
-static const char *volup[] = { "pactl", "set-sink-volume", "0", "+5%", NULL};
-static const char *voldown[] = { "pactl", "set-sink-volume", "0", "-5%", NULL};
-static const char *volmute[] = { "pactl", "set-sink-mute", "0", "toggle", NULL};
-static const char *audioplay[] = { "mpctoggle", NULL};
-static const char *audionext[] = { "mpc", "next", NULL};
-static const char *audioprev[] = { "mpc", "prev", NULL };
 static const char *dmenumount[] = { "dmenumount", NULL };
 static const char *dmenuumount[] = { "dmenuumount", NULL };
-static const char *dmenuXres[] = { "dmenuresources", NULL };
-static const char *passmenu[] = { "passmenu", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_u,      		  spawn,           {.v = dmenucmd } },
-	{ WINKEY,			XK_e,      		  spawn,   	   {.v = nighttog } },
-	{ WINKEY|ShiftMask,		XK_e,	   		  spawn,	   {.v = nightdis } },
-	{ WINKEY|ShiftMask,		XK_n, 	   		  spawn,	   {.v = shutdown } },
-	{ WINKEY|ShiftMask,		XK_r,	   		  spawn,	   {.v = reboot } },
-	{ WINKEY|ShiftMask,		XK_s,	   		  spawn,	   {.v = suspend } },
-	{ MODKEY,			XK_m,	   		  spawn,           {.v = music } },
-	{ MODKEY,			XK_n,	   		  spawn,           {.v = fm } },
-	{ MODKEY|ShiftMask,             XK_m,      		  spawn,	   {.v = mail } },
-	{ MODKEY,                       XK_Return, 		  spawn,           {.v = termcmd } },
-	{ MODKEY,                       XK_o,      		  spawn,           {.v = browcmd } },
-	{ MODKEY,			XK_p,	   		  spawn,           {.v = passmenu } },
-	{ MODKEY,			XK_d,	   		  spawn,           {.v = rofiapp } },
-	{ MODKEY|ControlMask,           XK_e,                     spawn,           {.v = editor  } },
-	{ MODKEY|ShiftMask,             XK_n,			  spawn,           {.v = newsboat } },
 	{ WINKEY|ShiftMask,	 	XK_m,			  spawn,	   {.v = dmenumount } },
 	{ WINKEY|ShiftMask,		XK_u,			  spawn,	   {.v = dmenuumount } },
-	{ WINKEY,                       XK_F1,                    spawn,           {.v = docs } },
 	{ MODKEY,                       XK_b,      		  togglebar,       {0} },
 	{ MODKEY,                       XK_j,      		  focusstack,      {.i = +1 } },
 	{ MODKEY,                       XK_k,      		  focusstack,      {.i = -1 } },
@@ -155,17 +116,8 @@ static Key keys[] = {
 	{ WINKEY,              		XK_h,                     setgaps,         {.i = 0 } },
 	{ WINKEY,                       XK_i,       		  incnmaster,      {.i = +1 } },
 	{ WINKEY,                       XK_l,                     incnmaster,      {.i = -1 } },
-	{ 0, 			        XF86XK_MonBrightnessUp,   spawn,           {.v = brup } },
-	{ 0,				XF86XK_MonBrightnessDown, spawn,           {.v = brdown } },
-	{ 0,				XF86XK_AudioRaiseVolume,  spawn,           {.v = volup } },
-	{ 0,				XF86XK_AudioLowerVolume,  spawn,           {.v = voldown } },
-	{ 0,				XF86XK_AudioMute,         spawn,           {.v = volmute } },
-	{ 0,				XF86XK_AudioPlay,         spawn,           {.v = audioplay } },
-	{ 0,				XF86XK_AudioNext,	  spawn,           {.v = audionext } },
-	{ 0,                            XF86XK_AudioPrev,         spawn,           {.v = audioprev } },
 	{ MODKEY|ShiftMask,             XK_e,                     quit,            {0} },
 	{ WINKEY,			XK_5,			  xrdb,            {.v = NULL } },
-	{ MODKEY,                       XK_x,                     spawn,           {.v = dmenuXres } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
