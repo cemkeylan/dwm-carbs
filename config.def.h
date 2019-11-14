@@ -116,7 +116,7 @@ static Key keys[] = {
 	{ WINKEY,              		XK_h,                     setgaps,         {.i = 0 } },
 	{ WINKEY,                       XK_i,       		  incnmaster,      {.i = +1 } },
 	{ WINKEY,                       XK_l,                     incnmaster,      {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_e,                     quit,            {0} },
+	{ MODKEY|ControlMask|ShiftMask, XK_q,                     quit,            {1} }, 
 	{ WINKEY,			XK_5,			  xrdb,            {.v = NULL } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
